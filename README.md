@@ -1,34 +1,27 @@
-asphyxia-sdvx-docker
+asphyxia-docker
 ===
 
-Host Asphyxia CORE with SDVX plugin via Docker
+Host Asphyxia CORE with all Asphyxia CORE plugins via Docker container
 
 To build image
 ---
 
-Make changes to configuration in `config.ini` first, and then build image by using following command (By default, there's no need to change properties `port`, `bind`, `matching_port` at all)
-
 ```
-docker build --tag sdvx:1.0 .
+docker build --tag asphyxia:1.50c .
 ```
 
 To run
 ---
 
-This will expose 2 ports
-
+Two ports will be exposed:
 - `8083` for API and WebUI
-- `5070` for matching
+- `5700` for matching
 
 ```
-docker run -p 8083:8083 -p 5700:5700 -d --name sdvx sdvx:1.0
+docker run -p 8083:8083 -p 5700:5700 -d --name asphyxia asphyxia:1.50c
 ```
 
-To backup
----
-
-Save data can be located at `/core/savedata.db`, you can get it easily before removing container by copy it
-
+Or download the `docker-compose.yml` file and run
 ```
-docker cp sdvx:/core/savedata.db .
+docker compose up -d
 ```
