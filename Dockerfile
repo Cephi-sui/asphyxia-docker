@@ -4,17 +4,23 @@ FROM debian:latest
 RUN apt update && \
     apt install -y wget git unzip
 
+USER 1000
+
+RUN mkdir /asphyxia
+
 # Set up Asphyxia CORE
-RUN cd /mnt && \
+RUN cd /asphyxia && \
     wget https://github.com/asphyxia-core/asphyxia-core.github.io/releases/download/v1.50/asphyxia-core-linux-x64.zip && \
     unzip asphyxia-core-linux-x64.zip && \
     rm -rf asphyxia-core-linux-x64.zip
 
 # Set up all Asphyxia CORE plugins
-RUN cd /mnt && \
+RUN cd /asphyxia && \
     git clone https://github.com/asphyxia-core/plugins plugins-git && \
     cp -r plugins-git/* plugins/. && \
     rm -rf plugins-git/
+
+USER 0
 
 # Remove unnecessary packages
 RUN apt remove -y wget git unzip
@@ -23,5 +29,7 @@ RUN apt remove -y wget git unzip
 EXPOSE 8083
 EXPOSE 5700
 
+USER 1000
+
 # Execute
-CMD ["/mnt/asphyxia-core"]
+CMD ["/asphyxia/asphyxia-core", "-d", "/mnt"]
