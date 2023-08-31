@@ -4,9 +4,9 @@ FROM debian:latest
 RUN apt update && \
     apt install -y wget git unzip
 
-USER 1000
+RUN mkdir /asphyxia && chown 1000:1000 /asphyxia
 
-RUN mkdir /asphyxia
+USER 1000
 
 # Set up Asphyxia CORE
 RUN cd /asphyxia && \
