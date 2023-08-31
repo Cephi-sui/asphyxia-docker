@@ -1,30 +1,27 @@
-FROM ubuntu:latest
+# debian was chosen for simplicity of development, this docker container would probably be better served by the use of Alpine Linux
+FROM debian:latest
 
-RUN apt-get update && \
-    apt-get install -y wget git unzip vim && \
-    rm -rf /var/lib/apt/lists/*
+RUN apt update && \
+    apt install -y wget git unzip
 
-# Extract Asphyxia CORE
-RUN mkdir /core && \
-  cd /core && \
-  wget https://github.com/asphyxia-core/asphyxia-core.github.io/releases/download/release/asphyxia-core-linux-x64.zip && \
-  unzip asphyxia-core-linux-x64.zip && \
-  chmod +x asphyxia-core-linux-x64 && \
-  rm -rf asphyxia-core-linux-x64.zip
-WORKDIR /core
+# Set up Asphyxia CORE
+RUN cd /mnt && \
+    wget https://github.com/asphyxia-core/asphyxia-core.github.io/releases/download/v1.50/asphyxia-core-linux-x64.zip && \
+    unzip asphyxia-core-linux-x64.zip && \
+    rm -rf asphyxia-core-linux-x64.zip
 
-# Extract SDVX plugin
-RUN mkdir /plugin-dump && cd /plugin-dump && git clone https://github.com/asphyxia-core/plugins.git && cd plugins && cp -r sdvx@asphyxia /core/plugins
+# Set up all Asphyxia CORE plugins
+RUN cd /mnt && \
+    git clone https://github.com/asphyxia-core/plugins plugins-git && \
+    cp -r plugins-git/* plugins/. && \
+    rm -rf plugins-git/
 
-# Cleanup
-RUN apt-get remove -y wget git unzip && \
-  rm -rf /var/lib/apt/lists/*
+# Remove unnecessary packages
+RUN apt remove -y wget git unzip
 
-COPY ./config.ini /core
-
-# Expose ports
+# Expose server port and matching port
 EXPOSE 8083
-EXPOSE 5070
+EXPOSE 5700
 
 # Execute
-CMD ["/core/asphyxia-core-linux-x64"]
+CMD ["/mnt/asphyxia-core"]
