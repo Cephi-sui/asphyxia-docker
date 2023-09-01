@@ -26,4 +26,7 @@ EXPOSE 8083
 EXPOSE 5700
 
 # Execute
-CMD ["sh", "-c", "if [ -e /mnt/config.ini ]; then cp /mnt/config.ini /asphyxia/config.ini; fi && /asphyxia/asphyxia-core -d /mnt/savedata"]
+CMD ["/asphyxia/asphyxia-core", "-d", "/mnt/savedata"]
+
+# Deprecated execution command for copying a config.ini, but the config can be changed from within the web-ui
+#CMD ["sh", "-c", "if [ -e /mnt/config.ini ]; then cp /mnt/config.ini /asphyxia/config.ini; fi && /asphyxia/asphyxia-core -d /mnt/savedata"]
