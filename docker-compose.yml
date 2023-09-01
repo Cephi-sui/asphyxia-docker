@@ -1,0 +1,12 @@
+version: "3.8"
+services:
+  asphyxia:
+    container_name: asphyxia
+    build:
+      dockerfile: ./Dockerfile
+    volumes:
+      - /your/asphyxia/save/folder/here:/mnt
+    ports:
+      - 8083
+      - 5700
+    restart: unless-stopped
