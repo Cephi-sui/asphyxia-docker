@@ -29,6 +29,12 @@ docker compose up -d
 ## Configuration
 ---
 
-After the Docker container is run for the first time, `config.ini` will appear in `/your/asphyxia/save/folder/here`.
+The Docker container is going to contain the default `config.ini` file for server configuration.  
+If you would like to customize it, then obtain the file by either downloading the `config.ini` file from this repository or running
+```
+docker container cp asphyxia:/asphyxia/config.ini .
+```
 
-You will be able to change a variety of options, but if you change the ports, be sure to change the exposed ports when starting the Docker container to match.
+Then, customize it and place it in `/your/asphyxia/save/folder/here` (the same folder used previously). Restart the container. The container should pull the config.ini file into asphyxia.
+
+In the config file, you will be able to change a variety of options, but if you change the ports, be sure to change the exposed ports when starting the Docker container to match.
