@@ -4,9 +4,7 @@ FROM debian:latest
 RUN apt update && \
     apt install -y wget git unzip
 
-RUN mkdir /asphyxia && chown 1000:1000 /asphyxia
-
-USER 1000
+RUN mkdir /asphyxia
 
 # Set up Asphyxia CORE
 RUN cd /asphyxia && \
@@ -20,8 +18,6 @@ RUN cd /asphyxia && \
     cp -r plugins-git/* plugins/. && \
     rm -rf plugins-git/
 
-USER 0
-
 # Remove unnecessary packages
 RUN apt remove -y wget git unzip
 
@@ -29,7 +25,5 @@ RUN apt remove -y wget git unzip
 EXPOSE 8083
 EXPOSE 5700
 
-USER 1000
-
 # Execute
-CMD ["/asphyxia/asphyxia-core", "-d", "/mnt"]
+CMD ["sh", "-c", "if [ -e /mnt/config.ini ]; then cp /mnt/config.ini /asphyxia/config.ini; fi && /asphyxia/asphyxia-core -d /mnt/savedata"]
